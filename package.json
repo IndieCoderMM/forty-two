@@ -11,13 +11,20 @@
     "@types/react-dom": "18.2.18",
     "@vercel/kv": "^1.0.1",
     "autoprefixer": "10.4.16",
-    "clsx": "^2.1.0",
     "geist": "^1.2.1",
     "next": "latest",
     "postcss": "^8.4.33",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.4.1",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "clsx": "^2.1.1",
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.12",
+    "tailwind-merge": "^3.3.1"
   }
 }

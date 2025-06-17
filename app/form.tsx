@@ -53,7 +53,7 @@ function Item({
         className={clsx(
           "ring-1 ring-gray-200 rounded-full w-8 min-w-[2rem] h-8 mr-4 focus:outline-none focus:ring focus:ring-blue-300",
           (isReleased || hasVoted) &&
-            "bg-green-100 cursor-not-allowed ring-green-300",
+          "bg-green-100 cursor-not-allowed ring-green-300",
           pending && "bg-gray-100 cursor-not-allowed",
         )}
         disabled={isReleased || hasVoted || pending}
@@ -120,7 +120,7 @@ export default function FeatureForm({ features }: { features: Feature[] }) {
 
   return (
     <>
-      <div className="mx-8 w-full">
+      <div className="w-full">
         <form
           className="relative my-8"
           ref={formRef}
