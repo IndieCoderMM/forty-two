@@ -3,12 +3,12 @@ import { create } from "zustand";
 type TodoStore = {
   isOpen: boolean;
   view: null | "create" | "edit";
-  category: null | string;
+  category: null | Todo["category"];
   todo: null | Todo;
   openModal: (props: {
     view: TodoStore["view"];
     todo?: Todo;
-    category?: string;
+    category?: Todo["category"];
   }) => void;
   closeModal: () => void;
 };

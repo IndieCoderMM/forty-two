@@ -4,7 +4,7 @@ import { getTodoKey } from "@/utils/helpers";
 import { kv } from "@vercel/kv";
 import { revalidatePath } from "next/cache";
 
-type CreateTodoType = Omit<Todo, "id" | "created_at" | "user_id">;
+type CreateTodoType = Pick<Todo, "category">;
 
 export async function saveTodo(todo: CreateTodoType, formdata: FormData) {
   // TODO: Get userId from session
