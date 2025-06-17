@@ -4,7 +4,7 @@ import EditTodoForm from "@/feats/todo-edit/ui/form";
 import { getTodoKey } from "@/utils/helpers";
 import { kv } from "@vercel/kv";
 
-export let metadata = {
+export const metadata = {
   title: "Life OS",
   description: "A dashboard for your life",
 };
@@ -16,7 +16,7 @@ async function getTodos(userId: string) {
   }
 
   try {
-    let todoIds = await kv.zrange(`todos_by_priority:${userId}`, 0, 100, {
+    const todoIds = await kv.zrange(`todos_by_priority:${userId}`, 0, 100, {
       rev: true,
     });
 
@@ -24,12 +24,12 @@ async function getTodos(userId: string) {
       return [];
     }
 
-    let multi = kv.multi();
+    const multi = kv.multi();
     todoIds.forEach((id) => {
       multi.hgetall(getTodoKey(id as string, userId));
     });
 
-    let todos: Todo[] = await multi.exec();
+    const todos: Todo[] = await multi.exec();
 
     return todos.filter(Boolean).map((todo) => {
       return {

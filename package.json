@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "lint": "next lint",
     "build": "next build",
     "start": "next start"
   },
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "clsx": "^2.1.1",
+    "eslint": "9.29.0",
+    "eslint-config-next": "15.3.3",
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.6.12",

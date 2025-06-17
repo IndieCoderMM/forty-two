@@ -10,7 +10,7 @@ export async function saveTodo(todo: CreateTodoType, formdata: FormData) {
   // TODO: Get userId from session
   const user_id = "default";
 
-  let newTodo: Todo = {
+  const newTodo: Todo = {
     ...todo,
     id: crypto.randomUUID(),
     user_id,
@@ -40,7 +40,7 @@ export async function updateTodo(todo: Todo, formdata: FormData) {
     ? (todo.progress ?? 0)
     : Number(progress);
 
-  let updatedTodo = {
+  const updatedTodo = {
     ...todo,
     title,
     why,
