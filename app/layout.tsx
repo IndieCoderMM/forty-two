@@ -1,3 +1,4 @@
+import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Flip, ToastContainer } from "react-toastify";
@@ -11,9 +12,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="h-screen overflow-hidden">
+        <body className="flex min-h-screen flex-col lg:h-screen lg:overflow-hidden">
           <Header />
           {children}
+          <Footer />
           <ToastContainer
             position="bottom-right"
             autoClose={3000}

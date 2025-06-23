@@ -54,7 +54,7 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
   };
 
   return (
-    <div className="relative grid h-full w-full grid-cols-1 border-x md:grid-cols-2 lg:grid-cols-3">
+    <div className="relative grid h-full w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       <span className="absolute left-0 top-0 origin-top-left -translate-x-full border-b border-l px-2 text-sm font-light text-gray-300">
         Dashboard
       </span>
@@ -81,7 +81,7 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
                 <div className="flex items-center gap-1">
                   <button
                     className={clsx(
-                      "flex items-center justify-center gap-2 rounded-md border p-1 shadow-sm hover:bg-gray-100",
+                      "flex items-center justify-center gap-2 rounded-md border bg-light p-1 shadow-sm hover:bg-gray-100",
                     )}
                     onClick={() => handleOpenForm(totalItems, category)}
                     aria-label={`Add new ${category.label}`}

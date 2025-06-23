@@ -62,7 +62,7 @@ export default function EditTodoForm() {
             name="title"
             type="text"
             required
-            placeholder="What are you working on?"
+            placeholder="I want to ..."
             defaultValue={todo.title}
             className="w-full border-none bg-transparent text-xl font-semibold placeholder-gray-400 focus:outline-none"
             maxLength={50}
@@ -74,13 +74,13 @@ export default function EditTodoForm() {
               htmlFor="why"
               className="absolute -top-3 bg-white px-2 text-sm text-gray-400"
             >
-              Why you want to do this?
+              Why am I doing this?
             </label>
             <textarea
               id="why"
               name="why"
               required
-              placeholder="Write down your intentions..."
+              placeholder="I'm doing this because..."
               defaultValue={todo.why}
               className="w-full resize-none border-none bg-transparent text-base placeholder-gray-400 focus:outline-none"
               rows={3}

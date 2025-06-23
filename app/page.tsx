@@ -55,14 +55,10 @@ export default async function Dashboard() {
   const todos = await getTodos();
 
   return (
-    <div className="h-full">
-      <div className="relative mx-auto flex h-full w-full max-w-[1200px] flex-1 flex-col items-center px-8">
-        <div className="flex h-full w-full">
-          <TodoDashboard todos={todos} />
-          <CreateTodoForm />
-          <EditTodoForm />
-        </div>
-      </div>
+    <div className="relative mx-auto w-full max-w-[1100px] flex-1 border-x">
+      <TodoDashboard todos={todos} />
+      <CreateTodoForm />
+      <EditTodoForm />
       <SignInCard />
     </div>
   );

@@ -51,10 +51,10 @@ export default function CreateTodoForm() {
         <form
           ref={formRef}
           action={handleSubmit}
-          className="flex flex-col gap-6 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100 sm:p-6"
+          className="flex flex-col gap-6 rounded-xl bg-white px-6 py-4 shadow-sm ring-1 ring-gray-100"
         >
-          <h2 className="mb-2 text-xl capitalize text-gray-500">
-            {category ? "Add New " + category : "Add New Item"}
+          <h2 className="mb-2 text-lg capitalize text-gray-500">
+            {category ? "Adding New " + category : "Adding New Item"}
           </h2>
           <input
             name="title"
@@ -64,8 +64,8 @@ export default function CreateTodoForm() {
             maxLength={50}
             placeholder="I want to..."
             autoComplete="off"
-            aria-label="Write title"
-            className="w-full rounded-lg bg-gray-100 px-4 py-3 text-lg text-gray-900 placeholder-gray-500 transition focus:bg-white focus:outline-none focus:ring-2 focus:ring-black/80"
+            aria-label="What do you want to do?"
+            className="w-full border-b bg-transparent pb-2 font-medium placeholder-gray-400 focus:outline-none"
           />
 
           <input
@@ -75,8 +75,8 @@ export default function CreateTodoForm() {
             maxLength={200}
             placeholder="Why does this matter?"
             autoComplete="off"
-            aria-label="Write reason"
-            className="w-full rounded-lg bg-gray-100 px-4 py-3 text-lg text-gray-900 placeholder-gray-500 transition focus:bg-white focus:outline-none focus:ring-2 focus:ring-black/80"
+            aria-label="Write reason for doing this?"
+            className="w-full border-b bg-transparent pb-2 font-medium placeholder-gray-400 focus:outline-none"
           />
 
           <div className="flex justify-end">
@@ -84,7 +84,7 @@ export default function CreateTodoForm() {
               type="submit"
               className="rounded-lg bg-black px-6 py-2 text-sm font-medium text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black/40"
             >
-              Save
+              Add
             </button>
           </div>
         </form>
