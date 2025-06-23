@@ -15,7 +15,7 @@ const TodoCard = ({
     <button
       key={todo.id}
       className={cn(
-        "flex w-full flex-col rounded-lg border border-l-4 border-gray-200 bg-gray-50 px-2 py-2 text-left shadow-sm",
+        "flex w-full flex-col rounded-lg border border-l-4 border-gray-200 bg-light px-2 py-2 text-left shadow-sm",
         todo.status === "done"
           ? "border-l-green-500"
           : todo.status === "doing"
@@ -25,9 +25,9 @@ const TodoCard = ({
       onClick={onClick}
     >
       <div className={"flex items-center justify-between rounded-l-sm"}>
-        <h3 className="text-gray-800">{todo.title}</h3>
+        <h3 className="text-sm text-gray-800">{todo.title}</h3>
       </div>
-      <p className="truncate text-sm text-gray-600">
+      <p className="truncate text-xs text-gray-600">
         {todo.why ? "Why? " + todo.why : "No reasons."}
       </p>
       {/* Progressbar */}

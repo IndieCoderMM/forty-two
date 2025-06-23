@@ -7,7 +7,12 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        light: "#fefefe",
+        dark: "#343a40",
+      },
+    },
   },
   future: {
     hoverOnlyWhenSupported: true,

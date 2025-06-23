@@ -1,5 +1,7 @@
+import Header from "@/components/layout/header";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Flip, ToastContainer } from "react-toastify";
 import "./globals.css";
-import { GeistSans } from "geist/font/sans";
 
 export default function RootLayout({
   children,
@@ -7,8 +9,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.variable}>
-      <body>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className="h-screen overflow-hidden">
+          <Header />
+          {children}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+            transition={Flip}
+          />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

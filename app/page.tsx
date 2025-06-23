@@ -1,15 +1,19 @@
+import SignInCard from "@/components/layout/sign-in-card";
 import { CreateTodoForm } from "@/feats/todo-create/ui";
 import { TodoDashboard } from "@/feats/todo-dashboard/ui";
 import EditTodoForm from "@/feats/todo-edit/ui/form";
 import { getTodoKey } from "@/utils/helpers";
+import { auth } from "@clerk/nextjs/server";
 import { kv } from "@vercel/kv";
 
 export const metadata = {
-  title: "Life OS",
-  description: "A dashboard for your life",
+  title: "42 OS | Your Life Dashboard",
+  description: "Manage your life with full control and intention",
 };
 
-async function getTodos(userId: string) {
+async function getTodos() {
+  const { userId } = await auth();
+
   if (!userId) {
     console.error("No user ID provided, returning empty todos.");
     return [];
@@ -48,19 +52,18 @@ async function getTodos(userId: string) {
 }
 
 export default async function Dashboard() {
-  // TODO: Add auth
-  const userId = "default";
-  const todos = await getTodos(userId ?? "");
+  const todos = await getTodos();
 
   return (
-    <div className="flex h-screen flex-col py-4">
-      <div className="flex w-full flex-1 flex-col items-center px-4 sm:px-10">
-        <div className="flex min-h-[300px] w-full">
+    <div className="h-full">
+      <div className="relative mx-auto flex h-full w-full max-w-[1200px] flex-1 flex-col items-center px-8">
+        <div className="flex h-full w-full">
           <TodoDashboard todos={todos} />
           <CreateTodoForm />
           <EditTodoForm />
         </div>
       </div>
+      <SignInCard />
     </div>
   );
 }

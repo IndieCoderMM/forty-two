@@ -1,7 +1,9 @@
 "use client";
 import { updateTodo } from "@/app/actions";
+import { Kbd } from "@/components/atoms/kbd";
 import { ProgressBarInput } from "@/components/atoms/progress-input";
 import { useTodoStore } from "@/hooks/store/use-todo-store";
+import { cn } from "@/utils/tw";
 import { useEffect, useRef, useState } from "react";
 
 export default function EditTodoForm() {
@@ -27,17 +29,28 @@ export default function EditTodoForm() {
   }
 
   return (
-    <div className="absolute inset-0 grid place-items-center bg-black/70 backdrop-blur-sm">
-      <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl ring-1 ring-gray-200">
-        <button
-          onClick={closeModal}
-          className="absolute right-4 top-2 text-3xl text-gray-400 hover:text-black"
+    <div className="fixed inset-0 grid place-items-center bg-black/70 backdrop-blur-sm">
+      <button
+        onClick={closeModal}
+        className="absolute right-2 top-0 z-50 flex items-center gap-2"
+      >
+        <span className="sr-only">Close</span>
+        <Kbd
+          keyname="Escape"
+          callback={() => {
+            if (isOpen) {
+              closeModal();
+            }
+          }}
+          className="border-white bg-transparent text-white"
         >
-          &times;
-        </button>
-
+          Esc
+        </Kbd>
+        <span className="text-4xl text-white">&times;</span>
+      </button>
+      <div className="relative w-full max-w-3xl p-8">
         <form
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-6 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100 sm:p-6"
           ref={formRef}
           action={async (formdata) => {
             updateTodo(todo, formdata);
@@ -45,19 +58,17 @@ export default function EditTodoForm() {
             closeModal();
           }}
         >
-          {/* Editable title */}
           <input
             name="title"
             type="text"
             required
             placeholder="What are you working on?"
             defaultValue={todo.title}
-            className="w-full border-none bg-transparent text-2xl font-semibold placeholder-gray-400 focus:outline-none"
+            className="w-full border-none bg-transparent text-xl font-semibold placeholder-gray-400 focus:outline-none"
             maxLength={50}
             autoComplete="off"
           />
 
-          {/* Why / Purpose */}
           <div className="relative rounded-md border border-gray-300 p-2">
             <label
               htmlFor="why"
@@ -78,23 +89,33 @@ export default function EditTodoForm() {
             />
           </div>
 
-          {/* Meta section */}
           <div className="flex items-center justify-between text-sm text-gray-500">
             <div className="flex flex-col gap-2">
               <p className="flex items-center gap-2">
                 Priority: <span className="font-semibold">{priorityValue}</span>
               </p>
-              <ProgressBarInput
-                name="priority"
-                value={priorityValue}
-                onChange={(event) => {
-                  const value = Number(event.target.value);
-                  setPriorityValue(value);
-                }}
-                className="w-32"
-                min={0}
-                max={5}
-              />
+              <div className="relative flex rounded-full bg-gray-100">
+                <div className="absolute left-0 flex h-full w-full items-center justify-between">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <span
+                      key={i}
+                      className={cn(`h-2 w-2 rounded-full bg-gray-300`)}
+                    />
+                  ))}
+                </div>
+                <input
+                  type="range"
+                  name="priority"
+                  min={1}
+                  max={5}
+                  value={priorityValue}
+                  onChange={(event) => {
+                    const value = Number(event.target.value);
+                    setPriorityValue(value);
+                  }}
+                  className="relative w-32 bg-transparent accent-black"
+                />
+              </div>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -119,7 +140,7 @@ export default function EditTodoForm() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="rounded-lg bg-black px-6 py-2 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="rounded-lg bg-black px-6 py-2 text-sm font-medium text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black/40"
             >
               Save
             </button>

@@ -1,7 +1,9 @@
 "use client";
+import { Kbd } from "@/components/atoms/kbd";
 import { useTodoStore } from "@/hooks/store/use-todo-store";
 import { cn } from "@/utils/tw";
 import clsx from "clsx";
+import { toast } from "react-toastify";
 import TodoCard from "./card";
 
 type Category = {
@@ -22,8 +24,8 @@ const categories: Category[] = [
     desc: "Things you put effort into.",
   },
   {
-    id: "idea",
-    label: "Ideas",
+    id: "inbox",
+    label: "Inbox",
     desc: "Things you want to explore.",
   },
 ] as const;
@@ -34,8 +36,8 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
   const openTodoForm = useTodoStore((state) => state.openModal);
 
   const handleOpenForm = (totalItems: number, category: Category) => {
-    if (totalItems >= MAX_ITEMS) {
-      alert(`Too many things! Put new things in inbox.`);
+    if (totalItems >= MAX_ITEMS && category.id !== "inbox") {
+      toast.error(`Too many things! Put new things in inbox.`);
       return;
     }
     openTodoForm({
@@ -52,7 +54,10 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
   };
 
   return (
-    <div className="grid w-full grid-cols-1 p-2 md:grid-cols-2 lg:grid-cols-3">
+    <div className="relative grid h-full w-full grid-cols-1 border-x md:grid-cols-2 lg:grid-cols-3">
+      <span className="absolute left-0 top-0 origin-top-left -translate-x-full border-b border-l px-2 text-sm font-light text-gray-300">
+        Dashboard
+      </span>
       {categories.map((category, index) => {
         const items = todos.filter((item) => item.category === category.id);
 
@@ -62,10 +67,10 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
           <div
             key={category.id}
             className={cn(
-              "h-full w-full border-r px-4",
+              "bg-grid h-full w-full border-r px-4 py-2",
               index === categories.length - 1
                 ? "border-transparent"
-                : "border-slate-200",
+                : "border-r",
             )}
           >
             <div className="mb-4">
@@ -73,14 +78,25 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
                 <h2 className="text-lg font-semibold capitalize text-gray-700">
                   {category.label}
                 </h2>
-                <button
-                  className={clsx(
-                    "flex h-8 w-8 items-center justify-center rounded-full border bg-black text-2xl text-white focus:bg-gray-800 focus:outline-none focus:ring focus:ring-blue-300",
-                  )}
-                  onClick={() => handleOpenForm(totalItems, category)}
-                >
-                  +
-                </button>
+                <div className="flex items-center gap-1">
+                  <button
+                    className={clsx(
+                      "flex items-center justify-center gap-2 rounded-md border p-1 shadow-sm hover:bg-gray-100",
+                    )}
+                    onClick={() => handleOpenForm(totalItems, category)}
+                    aria-label={`Add new ${category.label}`}
+                  >
+                    <Kbd
+                      keyname={category.id[0]}
+                      callback={() => {
+                        handleOpenForm(totalItems, category);
+                      }}
+                    >
+                      {category.id[0]}
+                    </Kbd>
+                    <span className="text-md pr-1">+</span>
+                  </button>
+                </div>
               </div>
               <p>
                 <span className="text-xs text-gray-400">{category.desc}</span>

@@ -1,8 +1,9 @@
 "use client";
 import { saveTodo } from "@/app/actions";
+import { Kbd } from "@/components/atoms/kbd";
 import { useTodoStore } from "@/hooks/store/use-todo-store";
-import { cn } from "@/utils/tw";
 import { useRef } from "react";
+import { toast } from "react-toastify";
 
 export default function CreateTodoForm() {
   let formRef = useRef<HTMLFormElement>(null);
@@ -11,60 +12,81 @@ export default function CreateTodoForm() {
   const view = useTodoStore((s) => s.view);
   const closeModal = useTodoStore((s) => s.closeModal);
 
+  const handleSubmit = async (formdata: FormData) => {
+    try {
+      await saveTodo({ category: category ?? "item" }, formdata);
+      formRef.current?.reset();
+      closeModal();
+    } catch (err) {
+      const message = (err as Error).message || "Something went wrong";
+      toast.error(message);
+    }
+  };
+
   if (!isOpen || view !== "create") {
     return null;
   }
 
   return (
-    <div className="absolute inset-0 grid place-items-center bg-black/80">
-      <div className="relative w-full max-w-3xl rounded-md bg-white p-8">
-        <h2 className="py-2 text-2xl">
-          {category ? "Add New " + category : "Add New Item"}
-        </h2>
-        <button
-          onClick={closeModal}
-          className="absolute right-2 top-0 z-50 text-4xl text-black"
-        >
-          &times;
-        </button>
-
-        <form
-          className="relative flex flex-col gap-4"
-          ref={formRef}
-          action={async (formdata) => {
-            await saveTodo({ category: category ?? "item" }, formdata);
-            formRef.current?.reset();
-            closeModal();
+    <div className="fixed inset-0 grid place-items-center bg-black/80">
+      <button
+        onClick={closeModal}
+        className="absolute right-2 top-0 z-50 flex items-center gap-2"
+      >
+        <span className="sr-only">Close</span>
+        <Kbd
+          keyname="Escape"
+          callback={() => {
+            if (isOpen) {
+              closeModal();
+            }
           }}
+          className="border-white bg-transparent text-white"
         >
+          Esc
+        </Kbd>
+        <span className="text-4xl text-white">&times;</span>
+      </button>
+      <div className="relative w-full max-w-3xl p-8">
+        <form
+          ref={formRef}
+          action={handleSubmit}
+          className="flex flex-col gap-6 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100 sm:p-6"
+        >
+          <h2 className="mb-2 text-xl capitalize text-gray-500">
+            {category ? "Add New " + category : "Add New Item"}
+          </h2>
           <input
-            aria-label="Write title"
-            className="block w-full rounded-md border border-gray-200 py-3 pl-3 pr-28 text-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-            maxLength={50}
-            placeholder={"I want to ..."}
-            required
-            type="text"
             name="title"
-            autoComplete="off"
-          />
-          <input
-            aria-label="Write reason"
-            autoComplete="off"
-            className="block w-full rounded-md border border-gray-200 py-3 pl-3 pr-28 text-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-            maxLength={200}
             type="text"
-            placeholder={"Why do you want to do this?"}
             required
-            name="why"
+            autoFocus
+            maxLength={50}
+            placeholder="I want to..."
+            autoComplete="off"
+            aria-label="Write title"
+            className="w-full rounded-lg bg-gray-100 px-4 py-3 text-lg text-gray-900 placeholder-gray-500 transition focus:bg-white focus:outline-none focus:ring-2 focus:ring-black/80"
           />
-          <button
-            className={cn(
-              "flex h-10 w-24 items-center justify-center self-end rounded-md border bg-black px-4 text-lg text-white focus:bg-gray-800 focus:outline-none focus:ring focus:ring-blue-300",
-            )}
-            type="submit"
-          >
-            Save
-          </button>
+
+          <input
+            name="why"
+            type="text"
+            required
+            maxLength={200}
+            placeholder="Why does this matter?"
+            autoComplete="off"
+            aria-label="Write reason"
+            className="w-full rounded-lg bg-gray-100 px-4 py-3 text-lg text-gray-900 placeholder-gray-500 transition focus:bg-white focus:outline-none focus:ring-2 focus:ring-black/80"
+          />
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="rounded-lg bg-black px-6 py-2 text-sm font-medium text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black/40"
+            >
+              Save
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -3,10 +3,21 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-50;
+  @apply bg-light;
 }
 
 input {
   /** Remove shadow on Safari iOS */
   -webkit-appearance: none;
+}
+
+.bg-grid {
+  --opacity: 0.25;
+  --gray: rgb(229 231 235 / var(--opacity));
+  /* gray-200 */
+  background-image: linear-gradient(to right, var(--gray) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--gray) 1px, transparent 1px);
+  background-repeat: repeat;
+  background-position: -10px -10px;
+  background-size: 20px 20px;
 }

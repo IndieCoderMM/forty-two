@@ -1,19 +1,23 @@
 "use server";
 
 import { getTodoKey } from "@/utils/helpers";
+import { auth } from "@clerk/nextjs/server";
 import { kv } from "@vercel/kv";
 import { revalidatePath } from "next/cache";
 
 type CreateTodoType = Pick<Todo, "category">;
 
 export async function saveTodo(todo: CreateTodoType, formdata: FormData) {
-  // TODO: Get userId from session
-  const user_id = "default";
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
 
   const newTodo: Todo = {
     ...todo,
     id: crypto.randomUUID(),
-    user_id,
+    user_id: userId?.toString(),
     title: (formdata.get("title") as string) || "",
     why: (formdata.get("why") as string) || "",
     priority: 1,
