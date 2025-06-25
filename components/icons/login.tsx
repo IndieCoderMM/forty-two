@@ -1,4 +1,4 @@
-const IconLogin = () => {
+const IconLogin = ({ className }: { className?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@ const IconLogin = () => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-log-in-icon lucide-log-in"
+      className={`${className} lucide lucide-log-in-icon lucide-log-in`}
     >
       <path d="m10 17 5-5-5-5" />
       <path d="M15 12H3" />

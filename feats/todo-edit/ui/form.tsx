@@ -3,6 +3,7 @@ import { deleteTodo, updateTodo } from "@/app/actions";
 import { Kbd } from "@/components/atoms/kbd";
 import { ProgressBarInput } from "@/components/atoms/progress-input";
 import { useTodoStore } from "@/hooks/store/use-todo-store";
+import { useAuth } from "@/utils/auth-context";
 import { cn } from "@/utils/tw";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -11,6 +12,7 @@ export default function EditTodoForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [priorityValue, setPriorityValue] = useState(1);
   const [progressValue, setProgressValue] = useState(0);
+  const { mode, userId } = useAuth();
 
   const isOpen = useTodoStore((s) => s.isOpen);
   const todo = useTodoStore((s) => s.todo);
@@ -32,6 +34,11 @@ export default function EditTodoForm() {
 
   const handleSubmit = async (formdata: FormData) => {
     if (!todo) return;
+    if (mode === "local") {
+      // TODO: Implement local storage logic
+      toast.error("Local mode is not supported yet.");
+      return;
+    }
 
     try {
       await toast.promise(updateTodo(todo, formdata), {

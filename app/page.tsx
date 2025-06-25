@@ -12,9 +12,7 @@ export const metadata = {
   description: "Manage your life with full control and intention",
 };
 
-async function getTodos() {
-  const { userId } = await auth();
-
+async function getTodos(userId: string | null) {
   if (!userId) {
     console.error("No user ID provided, returning empty todos.");
     return [];
@@ -53,7 +51,8 @@ async function getTodos() {
 }
 
 export default async function Dashboard() {
-  const todos = await getTodos();
+  const { userId } = await auth();
+  const todos = await getTodos(userId);
 
   return (
     <div className="relative mx-auto w-full max-w-[1100px] flex-1 border-x">

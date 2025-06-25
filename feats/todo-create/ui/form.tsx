@@ -2,6 +2,7 @@
 import { saveTodo } from "@/app/actions";
 import { Kbd } from "@/components/atoms/kbd";
 import { useTodoStore } from "@/hooks/store/use-todo-store";
+import { useAuth } from "@/utils/auth-context";
 import { useRef } from "react";
 import { toast } from "react-toastify";
 
@@ -11,6 +12,7 @@ export default function CreateTodoForm() {
   const category = useTodoStore((s) => s.category);
   const view = useTodoStore((s) => s.view);
   const closeModal = useTodoStore((s) => s.closeModal);
+  const { mode, userId } = useAuth();
 
   const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -19,6 +21,12 @@ export default function CreateTodoForm() {
   };
 
   const handleSubmit = async (formdata: FormData) => {
+    if (mode === "local") {
+      // TODO: Implement local storage logic
+      toast.error("Local mode is not supported yet.");
+      return;
+    }
+
     try {
       await toast.promise(
         saveTodo({ category: category ?? "item" }, formdata),
