@@ -1,4 +1,6 @@
+import LinkShortcuts from "@/feats/widgets/link-shortcut";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import DayTimeProgress from "../atoms/day-time-progress";
 import IconFingerprint from "../icons/fingerprint";
 
 const Header = () => {
@@ -11,6 +13,8 @@ const Header = () => {
             <span className="text-gray-500">OS</span>
           </h1>
         </div>
+        <DayTimeProgress containerStyle="hidden md:flex" />
+        <LinkShortcuts />
         <div className="left-full px-4 xl:absolute">
           <SignedOut>
             <SignInButton>

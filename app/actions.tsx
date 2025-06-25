@@ -39,6 +39,7 @@ export async function updateTodo(todo: Todo, formdata: FormData) {
   const title = formdata.get("title");
   const why = formdata.get("why");
   const progress = formdata.get("progress") as string;
+  const priority = formdata.get("priority");
 
   const currentProgress = isNaN(Number(progress))
     ? (todo.progress ?? 0)
@@ -46,6 +47,7 @@ export async function updateTodo(todo: Todo, formdata: FormData) {
 
   const updatedTodo = {
     ...todo,
+    priority: isNaN(Number(priority)) ? todo.priority : Number(priority),
     title,
     why,
     progress,
@@ -57,6 +59,19 @@ export async function updateTodo(todo: Todo, formdata: FormData) {
     score: updatedTodo.priority,
     member: updatedTodo.id,
   });
+
+  revalidatePath("/");
+}
+
+export async function deleteTodo(todo: Todo) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  await kv.hdel(getTodoKey(todo.id, todo.user_id), ...Object.keys(todo));
+  await kv.zrem(`todos_by_priority:${todo.user_id}`, todo.id);
 
   revalidatePath("/");
 }

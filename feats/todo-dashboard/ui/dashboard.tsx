@@ -1,5 +1,6 @@
 "use client";
 import { Kbd } from "@/components/atoms/kbd";
+import IconPlus from "@/components/icons/plus";
 import { useTodoStore } from "@/hooks/store/use-todo-store";
 import { cn } from "@/utils/tw";
 import clsx from "clsx";
@@ -16,17 +17,17 @@ const categories: Category[] = [
   {
     id: "skill",
     label: "Skills",
-    desc: "Things you want to learn or improve.",
+    desc: "Things I want to learn or improve.",
   },
   {
     id: "project",
     label: "Projects",
-    desc: "Things you put effort into.",
+    desc: "Things I put effort into.",
   },
   {
     id: "inbox",
     label: "Inbox",
-    desc: "Things you want to explore.",
+    desc: "Things I want to explore.",
   },
 ] as const;
 
@@ -61,6 +62,15 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
       {categories.map((category, index) => {
         const items = todos.filter((item) => item.category === category.id);
 
+        items.sort((a, b) => {
+          if (a.priority !== b.priority) {
+            return b.priority - a.priority; // Sort by priority
+          }
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          ); // Sort by creation date
+        });
+
         const totalItems = items.length;
 
         return (
@@ -81,7 +91,7 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
                 <div className="flex items-center gap-1">
                   <button
                     className={clsx(
-                      "flex items-center justify-center gap-2 rounded-md border bg-light p-1 shadow-sm hover:bg-gray-100",
+                      "flex items-center justify-center gap-1 rounded-md border bg-light p-1 shadow-sm hover:bg-gray-100",
                     )}
                     onClick={() => handleOpenForm(totalItems, category)}
                     aria-label={`Add new ${category.label}`}
@@ -94,7 +104,7 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
                     >
                       {category.id[0]}
                     </Kbd>
-                    <span className="text-md pr-1">+</span>
+                    <IconPlus className="text-gray-400" />
                   </button>
                 </div>
               </div>
@@ -102,7 +112,7 @@ const TodoDashboard = ({ todos }: { todos: Todo[] }) => {
                 <span className="text-xs text-gray-400">{category.desc}</span>
               </p>
             </div>
-            <ul className="flex flex-col space-y-2">
+            <ul className="flex h-full max-h-[60vh] flex-col space-y-2 overflow-y-auto">
               {items.map((item) => (
                 <li key={item.id}>
                   <TodoCard todo={item} handleClick={handleTodoClick} />

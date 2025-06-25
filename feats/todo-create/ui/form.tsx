@@ -12,14 +12,26 @@ export default function CreateTodoForm() {
   const view = useTodoStore((s) => s.view);
   const closeModal = useTodoStore((s) => s.closeModal);
 
+  const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
+
   const handleSubmit = async (formdata: FormData) => {
     try {
-      await saveTodo({ category: category ?? "item" }, formdata);
+      await toast.promise(
+        saveTodo({ category: category ?? "item" }, formdata),
+        {
+          pending: "Adding item...",
+          success: "Item added successfully!",
+          error: "Failed to add item.",
+        },
+      );
       formRef.current?.reset();
       closeModal();
     } catch (err) {
-      const message = (err as Error).message || "Something went wrong";
-      toast.error(message);
+      console.error("Failed to add item:", err);
     }
   };
 
@@ -28,7 +40,10 @@ export default function CreateTodoForm() {
   }
 
   return (
-    <div className="fixed inset-0 grid place-items-center bg-black/80">
+    <div
+      className="fixed inset-0 grid place-items-center bg-black/80"
+      onClick={onBackdropClick}
+    >
       <button
         onClick={closeModal}
         className="absolute right-2 top-0 z-50 flex items-center gap-2"

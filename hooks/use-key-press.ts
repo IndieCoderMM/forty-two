@@ -10,13 +10,16 @@ function isTyping(element: Element | null): boolean {
 
 export const useKeyPress = (key: string, callback: () => void) => {
   const handler = (event: KeyboardEvent) => {
-    if (key !== "Escape" && isTyping(document.activeElement)) {
+    if (
+      !["Escape", "Enter"].includes(key) &&
+      isTyping(document.activeElement)
+    ) {
       // Ignore key presses if the user is typing in an input or textarea
       // Except for Escape key
       return;
     }
 
-    if (event.key === key) {
+    if (event.key.toLowerCase() === key.toLowerCase()) {
       event.preventDefault();
       callback();
     }

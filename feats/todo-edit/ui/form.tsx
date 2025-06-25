@@ -1,10 +1,11 @@
 "use client";
-import { updateTodo } from "@/app/actions";
+import { deleteTodo, updateTodo } from "@/app/actions";
 import { Kbd } from "@/components/atoms/kbd";
 import { ProgressBarInput } from "@/components/atoms/progress-input";
 import { useTodoStore } from "@/hooks/store/use-todo-store";
 import { cn } from "@/utils/tw";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function EditTodoForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -13,7 +14,6 @@ export default function EditTodoForm() {
 
   const isOpen = useTodoStore((s) => s.isOpen);
   const todo = useTodoStore((s) => s.todo);
-  const category = useTodoStore((s) => s.category);
   const view = useTodoStore((s) => s.view);
   const closeModal = useTodoStore((s) => s.closeModal);
 
@@ -24,12 +24,52 @@ export default function EditTodoForm() {
     }
   }, [todo]);
 
+  const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
+
+  const handleSubmit = async (formdata: FormData) => {
+    if (!todo) return;
+
+    try {
+      await toast.promise(updateTodo(todo, formdata), {
+        pending: "Updating...",
+        success: "Updated successfully!",
+        error: "Failed to update.",
+      });
+      formRef.current?.reset();
+      closeModal();
+    } catch (error) {
+      console.error("Failed to update item:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!todo) return;
+
+    try {
+      await toast.promise(deleteTodo(todo), {
+        pending: "Deleting...",
+        success: "Deleted successfully!",
+        error: "Failed to delete.",
+      });
+      closeModal();
+    } catch (error) {
+      console.error("Failed to delete item:", error);
+    }
+  };
+
   if (!isOpen || view !== "edit" || !todo) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 grid place-items-center bg-black/70 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 grid place-items-center bg-black/70 backdrop-blur-sm"
+      onClick={onBackdropClick}
+    >
       <button
         onClick={closeModal}
         className="absolute right-2 top-0 z-50 flex items-center gap-2"
@@ -52,11 +92,7 @@ export default function EditTodoForm() {
         <form
           className="flex flex-col gap-6 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100 sm:p-6"
           ref={formRef}
-          action={async (formdata) => {
-            updateTodo(todo, formdata);
-            formRef.current?.reset();
-            closeModal();
-          }}
+          action={handleSubmit}
         >
           <input
             name="title"
@@ -130,19 +166,27 @@ export default function EditTodoForm() {
                   const value = Number(event.target.value);
                   setProgressValue(value);
                 }}
-                className="w-32"
+                className="w-48"
                 min={0}
                 max={100}
               />
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="rounded-lg border border-red-500 bg-light px-6 py-2 text-sm font-medium text-red-500 transition hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-black/40"
+            >
+              Give Up!
+            </button>
+
             <button
               type="submit"
-              className="rounded-lg bg-black px-6 py-2 text-sm font-medium text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black/40"
+              className="rounded-lg border border-black bg-black px-6 py-2 text-sm font-medium text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black/40"
             >
-              Save
+              Update
             </button>
           </div>
         </form>

@@ -1,3 +1,4 @@
+"use client";
 import { useKeyPress } from "@/hooks/use-key-press";
 import { cn } from "@/utils/tw";
 import React from "react";

@@ -18,15 +18,14 @@ export default function RootLayout({
           <Footer />
           <ToastContainer
             position="bottom-right"
-            autoClose={3000}
-            hideProgressBar={false}
+            autoClose={1000}
+            hideProgressBar={true}
             newestOnTop={false}
             closeOnClick={false}
-            rtl={false}
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="dark"
+            theme="light"
             transition={Flip}
           />
         </body>

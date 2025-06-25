@@ -2,6 +2,7 @@ import SignInCard from "@/components/layout/sign-in-card";
 import { CreateTodoForm } from "@/feats/todo-create/ui";
 import { TodoDashboard } from "@/feats/todo-dashboard/ui";
 import EditTodoForm from "@/feats/todo-edit/ui/form";
+import CommandPalette from "@/feats/widgets/command-palette";
 import { getTodoKey } from "@/utils/helpers";
 import { auth } from "@clerk/nextjs/server";
 import { kv } from "@vercel/kv";
@@ -56,10 +57,23 @@ export default async function Dashboard() {
 
   return (
     <div className="relative mx-auto w-full max-w-[1100px] flex-1 border-x">
+      <Decoration />
       <TodoDashboard todos={todos} />
       <CreateTodoForm />
       <EditTodoForm />
       <SignInCard />
+      <CommandPalette />
     </div>
+  );
+}
+
+function Decoration() {
+  return (
+    <>
+      <span className="absolute left-0 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded border bg-white shadow-inner" />
+      <span className="absolute right-0 top-0 h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded border bg-white shadow-inner" />
+      <span className="absolute bottom-0 left-0 h-4 w-4 -translate-x-1/2 translate-y-1/2 rounded border bg-white shadow-inner" />
+      <span className="absolute bottom-0 right-0 h-4 w-4 translate-x-1/2 translate-y-1/2 rounded border bg-white shadow-inner" />
+    </>
   );
 }
