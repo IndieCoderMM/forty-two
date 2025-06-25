@@ -1,36 +1,41 @@
-# Redis Example (with Upstash)
+# 42 OS
 
-This example showcases how to use Redis as a data store in a Next.js project.
+**Quiet homepage for your life.**
 
-The example is a roadmap voting application where users can enter and vote for feature requests. It features the following:
+This is a personal dashboard to track what you're doing with your time — books you're reading, projects you're building, things you're exploring. It's not a todo list. It's a way to stay aware of how you spend your time and attention.
 
-- Users can add and upvote items (features in the roadmap)
-- Users can enter their email addresses to be notified about the released items.
+## Features
 
-## Demo
+- Add things you're doing across a few simple categories
+- View them in one glance, like a living snapshot of your focus
+- Use it fully offline or sign in to sync
+- Keyboard-friendly interface
 
-- [https://roadmap-redis.vercel.app/](https://roadmap-redis.vercel.app/)
+## Tech
 
-## Deploy Your Own
+- Next.js
+- Tailwind CSS
+- Clerk (auth)
+- Redis KV
 
-This examples uses [Upstash](https://upstash.com) (Serverless Redis Database) as its data storage. During deployment. The integration will help you create a free Redis database and link it to your Vercel project automatically.
+## Development
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-redis&project-name=redis-roadmap&repository-name=redis-roadmap&demo-title=Redis%20Roadmap&demo-description=Create%20and%20upvote%20features%20for%20your%20product.&demo-url=https%3A%2F%2Froadmap-redis.vercel.app%2F&stores=%5B%7B"type"%3A"kv"%7D%5D&)
+1. Clone the repository
 
-## How to use
+2. Install dependencies
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+   ```bash
+   npm install
+   ```
 
-```bash
-npx create-next-app --example with-redis roadmap
-```
+3. Set up environment variables
 
-```bash
-yarn create next-app --example with-redis roadmap
-```
+   - Create a `.env.local` file in the root directory
+   - Copy content from `.env.example` and fill in your keys.
 
-```bash
-pnpm create next-app --example with-redis roadmap
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+4. Run the development server
+   ```bash
+   npm run dev
+   ```
+5. Open your browser and go to `http://localhost:3000`
+6. Sign up or log in with Clerk to start using the app
